@@ -969,7 +969,7 @@ def check_ahrefs_setup() -> str:
 
 @mcp.tool()
 def get_ahrefs_refdomains(
-    target: str, limit: int = 100, order_by: str = "domain_rating:desc"
+    target: str, limit: int = 100
 ) -> str:
     """
     Get list of referring domains for target domain via Ahrefs.
@@ -977,13 +977,14 @@ def get_ahrefs_refdomains(
     Args:
         target: Target domain (e.g. "example.com")
         limit: Number of results (maximum 1000, default 100)
-        order_by: Field for sorting with direction (default "domain_rating:desc")
 
     Returns:
         JSON string with list of referring domains
     """
     try:
+        order_by = "domain_rating:desc"
         ahrefs = AhrefsAPI()
+
         result = ahrefs.get_refdomains(target=target, limit=limit, order_by=order_by)
 
         if result and "error" in result:
@@ -1035,7 +1036,7 @@ def get_ahrefs_refdomains(
 
 @mcp.tool()
 def get_ahrefs_backlinks(
-    target: str, limit: int = 100, order_by: str = "domain_rating_source:desc"
+    target: str, limit: int = 100
 ) -> str:
     """
     Get list of backlinks for target domain via Ahrefs.
@@ -1043,12 +1044,12 @@ def get_ahrefs_backlinks(
     Args:
         target: Target domain (e.g. "example.com")
         limit: Number of results (maximum 1000, default 100)
-        order_by: Field for sorting with direction (default "domain_rating_source:desc")
 
     Returns:
         JSON string with list of backlinks
     """
     try:
+        order_by = "domain_rating_source:desc"
         ahrefs = AhrefsAPI()
         result = ahrefs.get_backlinks(target=target, limit=limit, order_by=order_by)
 
@@ -1103,7 +1104,6 @@ def get_ahrefs_backlinks(
 def get_ahrefs_organic_keywords(
     target: str,
     limit: int = 100,
-    order_by: str = "best_position:asc",
     date: Optional[str] = None,
 ) -> str:
     """
@@ -1112,7 +1112,6 @@ def get_ahrefs_organic_keywords(
     Args:
         target: Target domain (e.g. "example.com")
         limit: Number of results (maximum 1000, default 100)
-        order_by: Field for sorting with direction (default "best_position:asc")
         date: Date in YYYY-MM-DD format (default - current date)
 
     Returns:
@@ -1120,6 +1119,7 @@ def get_ahrefs_organic_keywords(
     """
     try:
         ahrefs = AhrefsAPI()
+        order_by = "best_position:asc"
         result = ahrefs.get_organic_keywords(
             target=target, limit=limit, order_by=order_by, date=date
         )
