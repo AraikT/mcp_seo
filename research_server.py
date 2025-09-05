@@ -2,7 +2,7 @@ import arxiv
 import json
 import os
 from typing import List, Optional
-from mcp.server.fastmcp import FastMCP
+from fastmcp import FastMCP
 from topvisor import TopvisorAPI
 from ahrefs import AhrefsAPI
 from dotenv import load_dotenv
@@ -254,6 +254,7 @@ def get_topvisor_projects() -> str:
     try:
         topvisor = TopvisorAPI()
         result = topvisor.get_projects()
+        
 
         # Check for API errors
         if result and "error" in result:
@@ -1359,7 +1360,7 @@ Please present both detailed information about each paper and a high-level synth
 
 if __name__ == "__main__":
     # Initialize and run the server
-    mcp.run(transport="stdio")
+    mcp.run(transport="http")
 
 
 # topvisor = TopvisorAPI()

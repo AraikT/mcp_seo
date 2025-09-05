@@ -5,3 +5,4 @@ mcp
 nest_asyncio
 requests
 dotenv
+fastmcp
