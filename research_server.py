@@ -639,25 +639,13 @@ def get_topvisor_regions(project_id: int) -> str:
 
         if result and "result" in result:
             regions = result["result"]
-            regions_info = []
-
-            for region in regions:
-                info = {
-                    "id": region.get("id"),
-                    "searcher": region.get("searcher"),
-                    "region_key": region.get("region_key"),
-                    "region_name": region.get("region_name"),
-                    "enabled": region.get("enabled"),
-                    "device": region.get("device"),
-                }
-                regions_info.append(info)
 
             return json.dumps(
                 {
                     "status": "success",
                     "project_id": project_id,
-                    "regions": regions_info,
-                    "total_count": len(regions_info),
+                    "regions": regions,
+                    "total_count": len(regions),
                 },
                 indent=2,
                 ensure_ascii=False,

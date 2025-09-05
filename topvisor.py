@@ -1,5 +1,6 @@
 import requests
 import json
+import csv
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
@@ -45,9 +46,21 @@ class TopvisorAPI:
             print(f"Status Code: {response.status_code}")
 
             if response.status_code == 200:
-                data = response.json()
+                # response.text is CSV formatted string with semicolon delimiter
+                data = []
+                for row in csv.reader(response.text.splitlines(), delimiter=';'):
+                    data.append(
+                        {
+                            "search_engine_key": row[0],
+                            "name": row[1],
+                            "country_code": row[2],
+                            "language": row[3],
+                            "region_device": row[4],
+                            "depth": row[5],
+                        }
+                    )
                 print(f"Successful API response")
-                return data
+                return {"result": data, "status_code": 200}
             elif response.status_code == 401:
                 print(f"Authorization error: Check API key")
                 print(f"Error text: {response.text}")
