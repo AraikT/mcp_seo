@@ -27,7 +27,7 @@ class TopvisorAPI:
             "Authorization": f"bearer {self.api_key}",
         }
 
-    def _make_request(self, endpoint, payload=None):
+    def _make_request(self, endpoint, payload=None, csv=False):
         url = f"{self.base_url}/{endpoint}"
 
         # Debug request output
@@ -47,20 +47,11 @@ class TopvisorAPI:
 
             if response.status_code == 200:
                 # response.text is CSV formatted string with semicolon delimiter
-                data = []
-                for row in csv.reader(response.text.splitlines(), delimiter=';'):
-                    data.append(
-                        {
-                            "search_engine_key": row[0],
-                            "name": row[1],
-                            "country_code": row[2],
-                            "language": row[3],
-                            "region_device": row[4],
-                            "depth": row[5],
-                        }
-                    )
-                print(f"Successful API response")
-                return {"result": data, "status_code": 200}
+                if csv:
+                    return {"result": response.text, "status_code": 200}
+                else:
+                    print(f"Successful API response")
+                    return response.json()
             elif response.status_code == 401:
                 print(f"Authorization error: Check API key")
                 print(f"Error text: {response.text}")
@@ -165,7 +156,22 @@ class TopvisorAPI:
     def get_project_regions(self, project_id):
         """Get project regions and search engines"""
         payload = {"project_id": project_id}
-        return self._make_request("positions_2/searchers_regions/export", payload)
+        
+        response = self._make_request("positions_2/searchers_regions/export", payload, csv=True)
+        data = []
+        for row in csv.reader(response["result"].splitlines(), delimiter=';'):
+            data.append(
+                {
+                    "search_engine_key": row[0],
+                    "name": row[1],
+                    "country_code": row[2],
+                    "language": row[3],
+                    "region_device": row[4],
+                    "depth": row[5],
+                }
+            )
+        
+        return {"result": data, "status_code": response.get("status_code", 200)}
 
     def get_keyword_folders(self, project_id):
         """Get project keyword folders"""
