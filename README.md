@@ -61,13 +61,17 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 ```
 mcp_seo/
 ├── mcp_chatbot.py          # Main chatbot interface
-├── research_server.py      # FastMCP server with SEO tools
-├── ahrefs.py              # Ahrefs API wrapper
-├── topvisor.py            # Topvisor API wrapper
+├── seo.py      # FastMCP server with SEO tools
 ├── server_config.json     # MCP server configuration
 ├── requirements.txt       # Python dependencies
 ├── pyproject.toml         # Project configuration
 ├── uv.lock               # Dependency lock file
+├── logic/                # Core business logic
+│   ├── ahrefs.py         # Ahrefs API wrapper
+│   └── topvisor.py       # Topvisor API wrapper
+├── tools/                # MCP tool implementations
+│   ├── ahrefs.py         # Ahrefs MCP tools
+│   └── topvisor.py       # Topvisor MCP tools
 └── papers/               # SEO research paper storage (optional)
     └── {topic}/
         └── papers_info.json
@@ -97,21 +101,27 @@ mcp_seo/
    ```
 
 3. **Set up environment variables:**
-   Create a `.env` file with your API keys:
+   Create a `.env` file with your API keys and MCP server configuration:
    ```env
    ANTHROPIC_API_KEY=your_anthropic_key_here
    TOPVISOR_API_KEY=your_topvisor_key_here  # Optional
    TOPVISOR_USER_ID=your_user_id_here       # Optional
    AHREFS_API_KEY=your_ahrefs_key_here      # Optional
+
+   # MCP server mode: stdio, sse, streamable-http
+   # Default: stdio
+   MCP_SERVER_TRANSPORT=stdio
+   # MCP server port (only for sse and streamable-http modes)
+   MCP_SERVER_PORT=3000
    ```
 
 4. **Run the research server:**
    ```bash
    # Using UV
-   uv run research_server.py
+   uv run seo.py
 
    # Or using Python
-   python research_server.py
+   python seo.py
    ```
 
 5. **Run the chatbot (in a new terminal):**
@@ -122,6 +132,24 @@ mcp_seo/
    # Or using Python
    python mcp_chatbot.py
    ```
+
+6. **Debug and development**
+   Set environment variables:
+   ```
+   MCP_SERVER_TRANSPORT=streamable-http
+   MCP_SERVER_PORT=3000
+   ```
+
+   Start MCP server by running `python seo.py`.
+
+   Run:
+   ```
+   npx @modelcontextprotocol/inspector
+   ```
+   It should open MCP Inspector in browser.
+   Connect to transport type `Streamable HTTP` and url `http://127.0.0.1:8000/mcp`
+
+   Navigate to tools and run required tool
 
 ## 🎮 Usage Guide
 
