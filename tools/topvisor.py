@@ -529,6 +529,16 @@ def get_topvisor_positions_summary(
         topvisor = TopvisorAPI()
         result = topvisor.get_positions_summary(project_id, date1, date2)
 
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+
         if result and "result" in result:
             summary = result["result"]
 
@@ -573,6 +583,16 @@ def get_topvisor_competitors(project_id: int) -> str:
     try:
         topvisor = TopvisorAPI()
         result = topvisor.get_project_competitors(project_id)
+
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
 
         if result and "result" in result:
             competitors = result["result"]
@@ -633,6 +653,16 @@ def get_topvisor_regions(project_id: int) -> str:
         topvisor = TopvisorAPI()
         result = topvisor.get_project_regions(project_id)
 
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+
         if result and "result" in result:
             regions = result["result"]
 
@@ -674,6 +704,16 @@ def get_topvisor_keyword_folders(project_id: int) -> str:
     try:
         topvisor = TopvisorAPI()
         result = topvisor.get_keyword_folders(project_id)
+
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
 
         if result and "result" in result:
             folders = result["result"]
@@ -729,6 +769,17 @@ def get_topvisor_keyword_groups(
     try:
         topvisor = TopvisorAPI()
         result = topvisor.get_keyword_groups(project_id, folder_id)
+
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+            
 
         if result and "result" in result:
             groups = result["result"]

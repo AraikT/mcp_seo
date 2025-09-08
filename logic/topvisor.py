@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
 
+from logic.utils import is_json
+
 load_dotenv()
 
 
@@ -158,6 +160,11 @@ class TopvisorAPI:
         payload = {"project_id": project_id}
         
         response = self._make_request("positions_2/searchers_regions/export", payload, csv=True)
+
+        if is_json(response["result"]):
+            error = json.loads(response["result"])
+            return error
+
         data = []
         for row in csv.reader(response["result"].splitlines(), delimiter=';'):
             data.append(
