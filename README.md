@@ -61,7 +61,7 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 ```
 mcp_seo/
 ├── mcp_chatbot.py          # Main chatbot interface
-├── research_server.py      # FastMCP server with SEO tools
+├── seo.py      # FastMCP server with SEO tools
 ├── server_config.json     # MCP server configuration
 ├── requirements.txt       # Python dependencies
 ├── pyproject.toml         # Project configuration
@@ -118,10 +118,10 @@ mcp_seo/
 4. **Run the research server:**
    ```bash
    # Using UV
-   uv run research_server.py
+   uv run seo.py
 
    # Or using Python
-   python research_server.py
+   python seo.py
    ```
 
 5. **Run the chatbot (in a new terminal):**
@@ -140,7 +140,7 @@ mcp_seo/
    MCP_SERVER_PORT=3000
    ```
 
-   Start MCP server by running `python research_server.py`.
+   Start MCP server by running `python seo.py`.
 
    Run:
    ```
