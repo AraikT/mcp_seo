@@ -219,7 +219,7 @@ def get_topvisor_projects() -> str:
 
 
 def get_topvisor_keywords(
-    project_id: int = 4878567,
+    project_id: int,
     folder_id: Optional[int] = None,
     group_id: Optional[int] = None,
 ) -> str:
