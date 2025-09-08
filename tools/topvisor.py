@@ -238,6 +238,17 @@ def get_topvisor_keywords(
         topvisor = TopvisorAPI()
         result = topvisor.get_project_keywords(project_id, folder_id, group_id)
 
+        if "errors" in result and result["errors"]:
+            return json.dumps(
+                {
+                    "status": "error",
+                    "project_id": project_id,
+                    "message": result["errors"],
+                },
+                indent=2,
+                ensure_ascii=False,
+            )
+
         if result and "result" in result:
             keywords = result["result"]
             keywords_info = []
@@ -360,11 +371,11 @@ def get_topvisor_positions_history(
                 ensure_ascii=False,
             )
 
-        if isinstance(result, dict) and "error" in result:
+        if isinstance(result, dict) and "errors" in result and result["errors"]:
             return json.dumps(
                 {
                     "status": "error",
-                    "message": f"API error: {result['error']}",
+                    "message": f"API error: {result['errors']}",
                     "debug": debug_info,
                 },
                 ensure_ascii=False,
