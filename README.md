@@ -56,6 +56,31 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 - Generate research summaries
 - Access papers via `@topic` syntax
 
+### Google Docs
+- Extract document text
+- Create new documents
+- Modify document text
+- Find documents by name
+- Find and replace text
+- List docs in folder
+- Add tables, lists, page breaks
+- Insert images from Drive/URLs
+- Modify headers and footers
+- Execute multiple operations
+- Analyze document structure
+- Create data tables
+- Debug table issues
+- Read, Reply, Create, Resolve Comments
+
+### Google Sheets
+- Read cell value
+- Write/update/clear cells
+- Create new spreadsheet
+- List accessible spreadsheets
+- Get spreadsheet metadata
+- Add sheets to existing files
+- Read, Reply, Create, Resolve Comments
+
 ## 📁 Project Structure
 
 ```
@@ -113,9 +138,47 @@ mcp_seo/
    MCP_SERVER_TRANSPORT=stdio
    # MCP server port (only for sse and streamable-http modes)
    MCP_SERVER_PORT=3000
+  ```
+
+4. Google tools configuration
+
+   Google MCP server is based on [taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp).
+
+   It requires creation of Google project, configuration of access and adding API keys.
+
+   First of all we need to create [Google project](https://console.cloud.google.com/):
+   * Open console.cloud.google.com
+   * Create new project
+   * Note project name
+
+   Then we need to enable [Docs and Sheets APIs](https://console.cloud.google.com/apis/library):
+   * Open APIs library
+   * Enable Google Sheets API
+   * Enable Google Docs API
+
+   Then we need to create [credentials](https://console.cloud.google.com/apis/credentials):
+   * Select OAuth client ID
+   * Select Application type > Desktop app
+   * Name you client
+   * Copy Client ID. Set it to `GOOGLE_OAUTH_CLIENT_ID` env variable in the `.env` file
+   * Copy Client Secret. Set it to `GOOGLE_OAUTH_CLIENT_SECRET` env variable in the `.env` file
+
+   Set additional env variables:
    ```
 
-4. **Run the research server:**
+   # The default user
+   USER_GOOGLE_EMAIL=<your gmail address here> 
+   # Allows HTTP redirect URIs (You should not see warning in the browser)
+   OAUTHLIB_INSECURE_TRANSPORT=1
+   ```
+
+   The first time it may ask you what Google account email you want to use to create the create Document/Spreadsheet.
+
+   The authentication work using OAuth protocol. The first time LLM or Agent will call auth tool. and provide you the link. If you use advanced MCP client(Cursor/Claude Desktop) then you should be able to click on link. It will ask you to allow user to use the application that you have created before. If you use console chat - you will need to copy the URL, open it in browser and confirm login with your Google account.
+
+   Next time you should be already authenticated and no need to repeat the process.
+
+5. **Run the research server:**
    ```bash
    # Using UV
    uv run seo.py
@@ -124,7 +187,7 @@ mcp_seo/
    python seo.py
    ```
 
-5. **Run the chatbot (in a new terminal):**
+6. **Run the chatbot (in a new terminal):**
    ```bash
    # Using UV
    uv run mcp_chatbot.py
@@ -133,7 +196,7 @@ mcp_seo/
    python mcp_chatbot.py
    ```
 
-6. **Debug and development**
+7. **Debug and development**
    Set environment variables:
    ```
    MCP_SERVER_TRANSPORT=streamable-http

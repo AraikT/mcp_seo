@@ -20,6 +20,18 @@
             "args": [
                 "mcp-server-fetch"
             ]
+        },
+        "google": {
+            "command": "uvx",
+            "args": [
+                "--env-file=.env",
+                "workspace-mcp",
+                "--tools",
+                "sheets",
+                "docs",
+                "--tool-tier",
+                "complete"
+            ]
         }
     }
 }
