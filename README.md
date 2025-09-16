@@ -8,7 +8,6 @@ This project provides:
 - **SEO Position Tracking**: Monitor keyword rankings and track search performance via Topvisor API
 - **Backlink Analysis**: Analyze domain authority, referring domains, and backlink profiles via Ahrefs API
 - **Competitive Research**: Track competitor rankings and analyze their SEO strategies
-- **Academic Research**: Access SEO-related research papers and studies from arXiv
 - **Unified Chat Interface**: Interact with all SEO tools through a single conversational bot
 - **MCP Architecture**: Demonstrates modern AI tool integration patterns for SEO workflows
 
@@ -19,12 +18,20 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   MCP ChatBot   │◄──►│  SEO Server      │◄──►│   SEO APIs      │
-│  (mcp_chatbot)  │    │   (FastMCP)      │    │ • Topvisor     │
-│                 │    │                  │    │ • Ahrefs       │
-│  • Claude API   │    │ • Position Track │    │ • arXiv        │
+│  (mcp_chatbot)  │    │   (FastMCP)      │    │ • Topvisor      │
+│                 │    │                  │    │ • Ahrefs        │
+│  • Claude API   │    │ • Position Track │    │                 │
 │  • Tool Router  │    │ • Backlink Analy │    └─────────────────┘
 │  • Chat Loop    │    │ • SEO Research   │
-└─────────────────┘    └──────────────────┘
+│                 │    └──────────────────┘
+│                 │    ┌─────────────────────────────────────────┐
+│                 │◄──►│ MCP Servers:                            │
+│                 │    │ mcp-server-fetch                        |
+│                 │    │ workspace-mcp                           │
+│                 │    | @modelcontextprotocol/server-filesystem │ 
+│                 │    └─────────────────────────────────────────┘
+│                 │  
+└─────────────────┘    
 ```
 
 ## 🚀 Features
@@ -50,7 +57,6 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 - Structured data display
 
 ### 📚 Research Support (Optional)
-- Search SEO-related papers from arXiv
 - Organize research by SEO topics
 - Extract detailed paper information
 - Generate research summaries
@@ -382,6 +388,6 @@ This project is for educational purposes. Check individual API terms for commerc
 
 ---
 
-**Built with**: Python, MCP, FastMCP, Anthropic Claude, arXiv API, Topvisor API, Ahrefs API
+**Built with**: Python, MCP, FastMCP, Anthropic Claude, Topvisor API, Ahrefs API
 
 *This project showcases the power of MCP for building integrated AI SEO analysis and competitive research tools.*
