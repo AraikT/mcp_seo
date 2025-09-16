@@ -56,12 +56,6 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 - Real-time API interactions
 - Structured data display
 
-### 📚 Research Support (Optional)
-- Organize research by SEO topics
-- Extract detailed paper information
-- Generate research summaries
-- Access papers via `@topic` syntax
-
 ### Google Docs
 - Extract document text
 - Create new documents
@@ -101,11 +95,9 @@ mcp_seo/
 │   ├── ahrefs.py         # Ahrefs API wrapper
 │   └── topvisor.py       # Topvisor API wrapper
 ├── tools/                # MCP tool implementations
-│   ├── ahrefs.py         # Ahrefs MCP tools
-│   └── topvisor.py       # Topvisor MCP tools
-└── papers/               # SEO research paper storage (optional)
-    └── {topic}/
-        └── papers_info.json
+    ├── ahrefs.py         # Ahrefs MCP tools
+    └── topvisor.py       # Topvisor MCP tools
+
 ```
 
 ## 🛠️ Installation
@@ -184,13 +176,13 @@ mcp_seo/
 
    Next time you should be already authenticated and no need to repeat the process.
 
-5. **Run the research server:**
+5. **Run the SEO server:**
    ```bash
    # Using UV
-   uv run seo.py
+   uv run seo_server.py
 
    # Or using Python
-   python seo.py
+   python seo_server.py
    ```
 
 6. **Run the chatbot (in a new terminal):**
@@ -224,20 +216,6 @@ mcp_seo/
 
 ### Basic Commands
 
-#### SEO Research Commands
-```bash
-# Search for SEO papers
-search_papers("search engine optimization", max_results=5)
-
-# Browse SEO topics
-@folders                    # List available topics
-@seo_strategies            # View SEO papers in topic
-
-# Prompts
-/prompts                   # List available prompts
-/prompt generate_search_prompt topic="SEO" num_papers=10
-```
-
 #### Topvisor SEO Commands
 ```bash
 /topvisor                  # Show all Topvisor commands
@@ -262,7 +240,6 @@ search_papers("search engine optimization", max_results=5)
 
 You can also use natural language:
 ```bash
-"Find SEO research papers about link building"
 "Show me the keyword positions for project 12345"
 "What are the referring domains for example.com?"
 "Check my Topvisor account balance"
@@ -288,21 +265,6 @@ You can also use natural language:
 2. Add to `.env` file for Claude AI functionality
 
 ## 🔍 Example Workflows
-
-### SEO Research Workflow
-```bash
-# 1. Search for SEO papers
-search_papers("keyword optimization strategies", max_results=8)
-
-# 2. Browse results
-@keyword_optimization_strategies
-
-# 3. Get specific paper details
-extract_info("2301.12345")
-
-# 4. Generate comprehensive analysis
-/prompt generate_search_prompt topic="SEO optimization" num_papers=10
-```
 
 ### SEO Analysis Workflow
 ```bash
@@ -373,7 +335,7 @@ This project is for educational purposes. Check individual API terms for commerc
    - Verify API endpoints are accessible
 
 3. **"Tool not found"**
-   - Ensure research server is running
+   - Ensure seo server is running
    - Check MCP server configuration
 
 4. **Import errors**

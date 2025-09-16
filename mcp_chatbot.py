@@ -297,7 +297,7 @@ For organic: best_position:asc, volume:desc, keyword_difficulty:asc
         session = self.sessions.get(tool_name)
         if not session:
             print(
-                f"Topvisor tool '{tool_name}' not found. Make sure research server is running."
+                f"Topvisor tool '{tool_name}' not found. Make sure seo server is running."
             )
             return
 
@@ -343,7 +343,7 @@ For organic: best_position:asc, volume:desc, keyword_difficulty:asc
         session = self.sessions.get(tool_name)
         if not session:
             print(
-                f"Ahrefs tool '{tool_name}' not found. Make sure research server is running."
+                f"Ahrefs tool '{tool_name}' not found. Make sure seo server is running."
             )
             return
 
