@@ -8,11 +8,11 @@
                 "."
             ]
         },
-        "research": {
+        "seo_server": {
             "command": "uv",
             "args": [
                 "run",
-                "seo.py"
+                "seo_server.py"
             ]
         },
         "fetch": {

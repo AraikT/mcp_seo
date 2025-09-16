@@ -4,9 +4,9 @@
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
     },
-    "research": {
+    "seo_server": {
       "command": "uv",
-      "args": ["run", "seo.py"]
+      "args": ["run", "seo_server.py"]
     },
     "fetch": {
       "command": "uvx",
