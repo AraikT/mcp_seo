@@ -30,7 +30,7 @@ load_dotenv()
 PAPER_DIR = "papers"
 
 # Initialize FastMCP server
-mcp = FastMCP("research")
+mcp = FastMCP("seo_server")
 
 # Register Topvisor tools
 mcp.tool(check_topvisor_setup)

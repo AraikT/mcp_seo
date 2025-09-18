@@ -8,7 +8,6 @@ This project provides:
 - **SEO Position Tracking**: Monitor keyword rankings and track search performance via Topvisor API
 - **Backlink Analysis**: Analyze domain authority, referring domains, and backlink profiles via Ahrefs API
 - **Competitive Research**: Track competitor rankings and analyze their SEO strategies
-- **Academic Research**: Access SEO-related research papers and studies from arXiv
 - **Unified Chat Interface**: Interact with all SEO tools through a single conversational bot
 - **MCP Architecture**: Demonstrates modern AI tool integration patterns for SEO workflows
 
@@ -19,12 +18,20 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   MCP ChatBot   │◄──►│  SEO Server      │◄──►│   SEO APIs      │
-│  (mcp_chatbot)  │    │   (FastMCP)      │    │ • Topvisor     │
-│                 │    │                  │    │ • Ahrefs       │
-│  • Claude API   │    │ • Position Track │    │ • arXiv        │
+│  (mcp_chatbot)  │    │   (FastMCP)      │    │ • Topvisor      │
+│                 │    │                  │    │ • Ahrefs        │
+│  • Claude API   │    │ • Position Track │    │                 │
 │  • Tool Router  │    │ • Backlink Analy │    └─────────────────┘
 │  • Chat Loop    │    │ • SEO Research   │
-└─────────────────┘    └──────────────────┘
+│                 │    └──────────────────┘
+│                 │    ┌─────────────────────────────────────────┐
+│                 │◄──►│ MCP Servers:                            │
+│                 │    │ mcp-server-fetch                        |
+│                 │    │ workspace-mcp                           │
+│                 │    | @modelcontextprotocol/server-filesystem │ 
+│                 │    └─────────────────────────────────────────┘
+│                 │  
+└─────────────────┘    
 ```
 
 ## 🚀 Features
@@ -49,12 +56,30 @@ The project uses the **Model Context Protocol (MCP)** to create a modular archit
 - Real-time API interactions
 - Structured data display
 
-### 📚 Research Support (Optional)
-- Search SEO-related papers from arXiv
-- Organize research by SEO topics
-- Extract detailed paper information
-- Generate research summaries
-- Access papers via `@topic` syntax
+### Google Docs
+- Extract document text
+- Create new documents
+- Modify document text
+- Find documents by name
+- Find and replace text
+- List docs in folder
+- Add tables, lists, page breaks
+- Insert images from Drive/URLs
+- Modify headers and footers
+- Execute multiple operations
+- Analyze document structure
+- Create data tables
+- Debug table issues
+- Read, Reply, Create, Resolve Comments
+
+### Google Sheets
+- Read cell value
+- Write/update/clear cells
+- Create new spreadsheet
+- List accessible spreadsheets
+- Get spreadsheet metadata
+- Add sheets to existing files
+- Read, Reply, Create, Resolve Comments
 
 ## 📁 Project Structure
 
@@ -70,11 +95,9 @@ mcp_seo/
 │   ├── ahrefs.py         # Ahrefs API wrapper
 │   └── topvisor.py       # Topvisor API wrapper
 ├── tools/                # MCP tool implementations
-│   ├── ahrefs.py         # Ahrefs MCP tools
-│   └── topvisor.py       # Topvisor MCP tools
-└── papers/               # SEO research paper storage (optional)
-    └── {topic}/
-        └── papers_info.json
+    ├── ahrefs.py         # Ahrefs MCP tools
+    └── topvisor.py       # Topvisor MCP tools
+
 ```
 
 ## 🛠️ Installation
@@ -113,18 +136,56 @@ mcp_seo/
    MCP_SERVER_TRANSPORT=stdio
    # MCP server port (only for sse and streamable-http modes)
    MCP_SERVER_PORT=3000
+  ```
+
+4. Google tools configuration
+
+   Google MCP server is based on [taylorwilsdon/google_workspace_mcp](https://github.com/taylorwilsdon/google_workspace_mcp).
+
+   It requires creation of Google project, configuration of access and adding API keys.
+
+   First of all we need to create [Google project](https://console.cloud.google.com/):
+   * Open console.cloud.google.com
+   * Create new project
+   * Note project name
+
+   Then we need to enable [Docs and Sheets APIs](https://console.cloud.google.com/apis/library):
+   * Open APIs library
+   * Enable Google Sheets API
+   * Enable Google Docs API
+
+   Then we need to create [credentials](https://console.cloud.google.com/apis/credentials):
+   * Select OAuth client ID
+   * Select Application type > Desktop app
+   * Name you client
+   * Copy Client ID. Set it to `GOOGLE_OAUTH_CLIENT_ID` env variable in the `.env` file
+   * Copy Client Secret. Set it to `GOOGLE_OAUTH_CLIENT_SECRET` env variable in the `.env` file
+
+   Set additional env variables:
    ```
 
-4. **Run the research server:**
+   # The default user
+   USER_GOOGLE_EMAIL=<your gmail address here> 
+   # Allows HTTP redirect URIs (You should not see warning in the browser)
+   OAUTHLIB_INSECURE_TRANSPORT=1
+   ```
+
+   The first time it may ask you what Google account email you want to use to create the create Document/Spreadsheet.
+
+   The authentication work using OAuth protocol. The first time LLM or Agent will call auth tool. and provide you the link. If you use advanced MCP client(Cursor/Claude Desktop) then you should be able to click on link. It will ask you to allow user to use the application that you have created before. If you use console chat - you will need to copy the URL, open it in browser and confirm login with your Google account.
+
+   Next time you should be already authenticated and no need to repeat the process.
+
+5. **Run the SEO server:**
    ```bash
    # Using UV
-   uv run seo.py
+   uv run seo_server.py
 
    # Or using Python
-   python seo.py
+   python seo_server.py
    ```
 
-5. **Run the chatbot (in a new terminal):**
+6. **Run the chatbot (in a new terminal):**
    ```bash
    # Using UV
    uv run mcp_chatbot.py
@@ -133,7 +194,7 @@ mcp_seo/
    python mcp_chatbot.py
    ```
 
-6. **Debug and development**
+7. **Debug and development**
    Set environment variables:
    ```
    MCP_SERVER_TRANSPORT=streamable-http
@@ -154,20 +215,6 @@ mcp_seo/
 ## 🎮 Usage Guide
 
 ### Basic Commands
-
-#### SEO Research Commands
-```bash
-# Search for SEO papers
-search_papers("search engine optimization", max_results=5)
-
-# Browse SEO topics
-@folders                    # List available topics
-@seo_strategies            # View SEO papers in topic
-
-# Prompts
-/prompts                   # List available prompts
-/prompt generate_search_prompt topic="SEO" num_papers=10
-```
 
 #### Topvisor SEO Commands
 ```bash
@@ -193,7 +240,6 @@ search_papers("search engine optimization", max_results=5)
 
 You can also use natural language:
 ```bash
-"Find SEO research papers about link building"
 "Show me the keyword positions for project 12345"
 "What are the referring domains for example.com?"
 "Check my Topvisor account balance"
@@ -219,21 +265,6 @@ You can also use natural language:
 2. Add to `.env` file for Claude AI functionality
 
 ## 🔍 Example Workflows
-
-### SEO Research Workflow
-```bash
-# 1. Search for SEO papers
-search_papers("keyword optimization strategies", max_results=8)
-
-# 2. Browse results
-@keyword_optimization_strategies
-
-# 3. Get specific paper details
-extract_info("2301.12345")
-
-# 4. Generate comprehensive analysis
-/prompt generate_search_prompt topic="SEO optimization" num_papers=10
-```
 
 ### SEO Analysis Workflow
 ```bash
@@ -304,7 +335,7 @@ This project is for educational purposes. Check individual API terms for commerc
    - Verify API endpoints are accessible
 
 3. **"Tool not found"**
-   - Ensure research server is running
+   - Ensure seo server is running
    - Check MCP server configuration
 
 4. **Import errors**
@@ -319,6 +350,6 @@ This project is for educational purposes. Check individual API terms for commerc
 
 ---
 
-**Built with**: Python, MCP, FastMCP, Anthropic Claude, arXiv API, Topvisor API, Ahrefs API
+**Built with**: Python, MCP, FastMCP, Anthropic Claude, Topvisor API, Ahrefs API
 
 *This project showcases the power of MCP for building integrated AI SEO analysis and competitive research tools.*

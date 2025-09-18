@@ -8,17 +8,29 @@
                 "."
             ]
         },
-        "research": {
+        "seo_server": {
             "command": "uv",
             "args": [
                 "run",
-                "seo.py"
+                "seo_server.py"
             ]
         },
         "fetch": {
             "command": "uvx",
             "args": [
                 "mcp-server-fetch"
+            ]
+        },
+        "google": {
+            "command": "uvx",
+            "args": [
+                "--env-file=.env",
+                "workspace-mcp",
+                "--tools",
+                "sheets",
+                "docs",
+                "--tool-tier",
+                "complete"
             ]
         }
     }
